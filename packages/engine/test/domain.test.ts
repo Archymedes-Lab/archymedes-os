@@ -119,14 +119,14 @@ describe("CSV import preview", () => {
     expect(p.rows[1].currency).toBe("USD");
     expect(p.rows[0].amountMinor).toBe(120_000);
     expect(p.rows[0].fields.segment).toBe("smb");
-    expect(p.duplicates).toEqual([{ line: 4, reason: expect.stringContaining("INV-1") }]);
+    expect(p.duplicates).toEqual([{ line: 4, reason: "INV-1 appears earlier in this file" }]);
     expect(p.missing.map((m) => m.line)).toEqual([5]);
     expect(p.invalid.map((m) => m.line)).toEqual([6, 7]);
   });
   it("treats rows already imported as duplicates (replay suppression)", () => {
     const p = previewImport("invoice_id,date,amount\nINV-9,2026-10-01,1", { ...mapping, currency: undefined, extra: {} }, new Set(["INV-9"]));
     expect(p.rows).toEqual([]);
-    expect(p.duplicates).toHaveLength(1);
+    expect(p.duplicates).toEqual([{ line: 2, reason: "INV-9 was already imported" }]);
   });
   it("reports a mapped column the file does not have", () => {
     const p = previewImport("id,when\n1,2026-01-01", mapping, new Set());

@@ -66,7 +66,8 @@ export function previewImport(csv: string, mapping: ImportMapping, existing: Rea
     const amount = at(mapping.amount);
     const empty = [!id && mapping.externalId, !date && mapping.occurredAt, !amount && mapping.amount].filter(Boolean);
     if (empty.length) return issue(preview.missing, `empty: ${empty.join(", ")}`);
-    if (seen.has(id)) return issue(preview.duplicates, `${id} already imported`);
+    if (existing.has(id)) return issue(preview.duplicates, `${id} was already imported`);
+    if (seen.has(id)) return issue(preview.duplicates, `${id} appears earlier in this file`);
     const currency = (mapping.currency ? at(mapping.currency) : "") || mapping.defaultCurrency;
     if (!isCurrencyCode(currency)) return issue(preview.invalid, `currency "${currency}" is not a code like USD`);
     if (companyCurrency && currency !== companyCurrency) return issue(preview.invalid, `currency ${currency} differs from company currency ${companyCurrency}`);
