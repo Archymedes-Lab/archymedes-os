@@ -1,0 +1,24 @@
+{
+  "name": "@archymedes/api",
+  "version": "0.4.0",
+  "private": true,
+  "type": "module",
+  "license": "Apache-2.0",
+  "description": "Cloudflare Worker: serves the web app and the hosted Enterprise API (Durable Object per workspace, AuthKit sign-in).",
+  "scripts": {
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit",
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy"
+  },
+  "dependencies": {
+    "@archymedes/engine": "workspace:*",
+    "jose": "^5.9.6"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^4.20241205.0",
+    "fast-check": "^4.11.0",
+    "typescript": "^5.7.0",
+    "vitest": "^2.1.9"
+  }
+}

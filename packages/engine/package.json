@@ -1,0 +1,21 @@
+{
+  "name": "@archymedes/engine",
+  "version": "0.4.0",
+  "private": true,
+  "type": "module",
+  "license": "Apache-2.0",
+  "description": "Pure TypeScript engine: Orion evaluator, Compass tasks, outcomes, learning loop and the Enterprise API. No Node or browser dependencies.",
+  "exports": {
+    "./*": "./src/*.ts"
+  },
+  "scripts": {
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.0",
+    "fast-check": "^4.11.0",
+    "typescript": "^5.7.0",
+    "vitest": "^2.1.9"
+  }
+}

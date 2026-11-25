@@ -1,0 +1,13 @@
+{
+  "name": "archymedes-os",
+  "private": true,
+  "description": "Archymedes OS — Winning = Good Decisions × Effective Execution × Continuous Learning. Orion decides, Compass executes, every cycle learns.",
+  "license": "Apache-2.0",
+  "workspaces": ["packages/*", "apps/*"],
+  "scripts": {
+    "test": "bun run --filter '*' test",
+    "typecheck": "bun run --filter '*' typecheck",
+    "build": "bun run --filter @archymedes/web build",
+    "deploy": "bun run build && bun run --filter @archymedes/api deploy"
+  }
+}

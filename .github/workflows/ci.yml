@@ -1,0 +1,37 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: oven-sh/setup-bun@v2
+      - run: bun install --frozen-lockfile
+      - name: Typecheck
+        run: |
+          (cd packages/engine && bunx tsc --noEmit)
+          (cd apps/api && bunx tsc --noEmit)
+          (cd apps/web && bunx tsc --noEmit)
+      - name: Lint
+        run: cd apps/web && bunx eslint .
+      - name: Unit, property and API tests
+        run: |
+          (cd packages/engine && bunx vitest run)
+          (cd apps/api && bunx vitest run)
+          (cd apps/web && bunx vitest run)
+      - name: Build
+        run: cd apps/web && bun run build
+      - name: End-to-end and accessibility
+        run: |
+          cd apps/web
+          bunx playwright install --with-deps chromium
+          bunx playwright test

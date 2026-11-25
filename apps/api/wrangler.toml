@@ -1,0 +1,37 @@
+name = "archymedes-os"
+main = "src/index.ts"
+compatibility_date = "2026-10-01"
+compatibility_flags = ["nodejs_compat"]
+
+routes = [{ pattern = "os.archymedes.xyz", custom_domain = true }]
+
+[assets]
+directory = "../web/out"
+binding = "ASSETS"
+not_found_handling = "404-page"
+run_worker_first = ["/api/*", "/auth/*", "/oauth/*"]
+
+[vars]
+AUTHKIT_ISSUER = "https://vast-prism-62-staging.authkit.app"
+PUBLIC_ORIGIN = "https://os.archymedes.xyz"
+
+# Cloud document storage. Enable R2 on the account, run
+# `wrangler r2 bucket create archymedes-os-docs`, then uncomment:
+# [[r2_buckets]]
+# binding = "DOCS"
+# bucket_name = "archymedes-os-docs"
+
+[[durable_objects.bindings]]
+name = "TENANTS"
+class_name = "TenantStore"
+
+[[durable_objects.bindings]]
+name = "DIRECTORY"
+class_name = "DirectoryStore"
+
+[[migrations]]
+tag = "v1"
+new_sqlite_classes = ["TenantStore", "DirectoryStore"]
+
+[observability]
+enabled = true
