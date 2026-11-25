@@ -6,6 +6,10 @@ const SHOTS = "e2e-results/shots";
 const shot = (page: Page, name: string) => page.screenshot({ path: `${SHOTS}/${name}.png`, fullPage: false });
 
 async function axe(page: Page, where: string) {
+  // Measure the settled page: with reduced motion the stylesheet turns off fade-ins,
+  // so contrast is never sampled mid-animation.
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  await page.waitForTimeout(50);
   const r = await new AxeBuilder({ page }).withTags(["wcag2a", "wcag2aa", "wcag21aa"]).analyze();
   const serious = r.violations.filter((v) => v.impact === "serious" || v.impact === "critical");
   expect(serious.map((v) => `${where}: ${v.id} — ${v.nodes.slice(0, 3).map((n) => n.target.join(" ")).join(" | ")}`)).toEqual([]);
